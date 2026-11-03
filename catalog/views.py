@@ -5,6 +5,9 @@ from django.http import Http404 # -28- Импорт исключения для 
 from catalog.models import Product, ContactInfo, Category
 from catalog.forms import (ProductForm,
                            ProductModeratorForm) # -28- Импорт формы views.py
+from django.utils.decorators import method_decorator # -29- Импорт утилиты декорирования методов класса (Задание 2)
+from django.views.decorators.cache import cache_page # -29- Импорт декоратора кэширования страниц (Задание 2)
+from django.conf import settings # -29- Импорт настроек проекта для получения CACHE_TTL (Задание 2)
 
 class ProductListView(ListView):
     """-25- Контроллер главной страницы"""
@@ -69,7 +72,8 @@ class ContactsTemplateView(TemplateView):
         return self.render_to_response(context)
 
 
-
+# -29- Декорируем метод dispatch класса, чтобы кэшировать всю страницу одного продукта целиком (Задание 2)
+@method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
 class ProductDetailView(DetailView):
     """-25- Контроллер страницы с подробной информацией о товаре"""
     model = Product
