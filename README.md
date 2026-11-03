@@ -72,7 +72,7 @@ cd 28_Django_DZ
 SECRET_KEY=django-insecure-your-actual-secret-key
 DEBUG=True
 
-NAME=28_Django_DZ
+NAME=29_Django_DZ
 USER=postgres
 PASSWORD=ваш_пароль_от_postgres
 HOST=localhost
@@ -89,10 +89,11 @@ ADMIN_EMAIL=user@example.com
   redis-server.exe
   ```
 
-### 4. Установка зависимостей и активация окружения через Poetry
+### 4. Установка зависимостей и активация окружения через Poetry, библиотека Redis для взаимодействия Python (Задание 29)
 ```bash
 poetry install
 poetry shell
+poetry add redis
 ```
 
 ### 5. Применение миграций (включая каталог, блог и пользователей)
