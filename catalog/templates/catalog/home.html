@@ -1,0 +1,39 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Главная - Магазин
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid text-center">
+    <h1 class="display-5 fw-normal mt-4 mb-2">Главная</h1>
+    <p class="text-muted mb-5">Вы находитесь на сайте, предназначенном для продажи товаров.</p>
+
+    <!-- ДИНАМИЧЕСКАЯ СЕТКА КАРТОЧЕК ТОВАРОВ ИЗ БАЗЫ ДАННЫХ -->
+    <div class="products-grid">
+        {% for product in products %}
+            <div class="product-col">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>{{ product.name }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">{{ product.price }} ₽</h1>
+
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <!-- Задание 2: Ограничиваем описание товара до 100 символов -->
+                            <li>{{ product.description|truncatechars:100|default:"Описание отсутствует" }}</li>
+                        </ul>
+
+                        <!-- Задание 1 + 2: Переход на детальную страницу товара -->
+                        <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-outline-primary">Купить</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <p class="text-muted">В каталоге нет товара. Наполните БД кастомной командой `fill` или через админку.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

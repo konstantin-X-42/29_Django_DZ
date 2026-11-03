@@ -1,0 +1,37 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Категории - Магазин{% endblock %}
+
+{% block content %}
+<div class="container-fluid text-center">
+    <!-- Название страницы -->
+    <h1 class="display-5 fw-normal mt-4 mb-2">Категории</h1>
+    <p class="text-muted mb-5">Раздел с группами товаров вашей компании.</p>
+
+    <!-- ДИНАМИЧЕСКАЯ СЕТКА КАРТОЧЕК ИЗ БАЗЫ ДАННЫХ -->
+    <div class="products-grid">
+        {% for category in categories %}
+            <div class="product-col">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>{{ category.name }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <!-- Вывод описания категории -->
+                            <li>{{ category.description|truncatechars:100|default:"Описание категории отсутствует" }}</li>
+                        </ul>
+
+                        <!-- Кнопка для просмотра товаров этой категории -->
+                        <a href="#" class="btn btn-outline-primary">Посмотреть товары</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <p class="text-muted">В базе данных пока нет созданных категорий. Добавьте их через админку Django.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

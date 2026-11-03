@@ -1,0 +1,69 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Контакты - Магазин{% endblock %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto;">
+    <h1 class="text-center" style="font-size: 2.5rem; font-weight: 300; margin-top: 1.5rem; margin-bottom: 3rem;">Контакты</h1>
+
+    <!-- Двухколоночная гибкая сетка -->
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 40px;">
+
+        <!-- Левая колонка: Форма обратной связи -->
+        <div style="flex: 1 1 400px; max-width: 450px; box-sizing: border-box;">
+            {% if success_message %}
+            <div style="background-color: #d1e7dd; color: #0f5132; padding: 12px 20px; border-radius: 6px; margin-bottom: 1rem; border: 1px solid #badbcc;">
+                {{ success_message }}
+            </div>
+            {% endif %}
+
+            <!-- Красивая белая карточка с тенью -->
+            <div style="padding: 24px; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 .125rem .25rem rgba(0,0,0,.075); background-color: #fff; box-sizing: border-box;">
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <!-- Поле Имя -->
+                    <div style="margin-bottom: 1rem;">
+                        <label for="inputName" style="display: block; margin-bottom: .5rem; color: #6c757d; font-size: .875rem; font-weight: 500;">Имя</label>
+                        <input type="text" style="display: block; width: 100%; padding: .375rem .75rem; font-size: 1rem; color: #212529; background-color: #fff; border: 1px solid #ced4da; border-radius: .375rem; box-sizing: border-box;" id="inputName" name="name" required>
+                    </div>
+
+                    <!-- Поле Почта с иконкой @ -->
+                    <div style="margin-bottom: 1rem;">
+                        <label for="inputEmail" style="display: block; margin-bottom: .5rem; color: #6c757d; font-size: .875rem; font-weight: 500;">Почта</label>
+                        <div style="display: flex; width: 100%;">
+                            <span style="display: flex; align-items: center; padding: .375rem .75rem; font-size: 1rem; color: #6c757d; background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: .375rem 0 0 .375rem;">@</span>
+                            <input type="email" style="display: block; width: 100%; padding: .375rem .75rem; font-size: 1rem; color: #212529; background-color: #fff; border: 1px solid #ced4da; border-radius: 0 .375rem .375rem 0; box-sizing: border-box;" id="inputEmail" name="email" required>
+                        </div>
+                    </div>
+
+                    <!-- Поле Сообщение -->
+                    <div style="margin-bottom: 1.5rem;">
+                        <label for="inputText" style="display: block; margin-bottom: .5rem; color: #6c757d; font-size: .875rem; font-weight: 500;">Сообщение</label>
+                        <textarea style="display: block; width: 100%; padding: .375rem .75rem; font-size: 1rem; color: #212529; background-color: #fff; border: 1px solid #ced4da; border-radius: .375rem; box-sizing: border-box; resize: vertical;" id="inputText" name="message" rows="4" required></textarea>
+                    </div>
+
+                    <!-- Кнопка отправить -->
+                    <button type="submit" class="btn-outline-primary" style="background-color: #2f6bf2; color: #fff; border: none; padding: 10px 24px; width: auto; font-weight: 500;">Отправить</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Правая колонка: Вывод контактов из БД -->
+        <div style="flex: 1 1 450px; max-width: 550px; box-sizing: border-box; padding-left: 20px;">
+            <h3 style="font-size: 1.5rem; font-weight: 700; margin-top: 0; margin-bottom: 1.5rem; color: #212529;">Наши контакты</h3>
+
+            {% if contact_data %}
+                <p style="color: #6c757d; line-height: 2; margin-bottom: 0.5rem; font-size: 1.1rem;"><strong style="color: #212529;">Телефон:</strong> {{ contact_data.phone }}</p>
+                <p style="color: #6c757d; line-height: 2; margin-bottom: 0.5rem; font-size: 1.1rem;"><strong style="color: #212529;">Email:</strong> {{ contact_data.email }}</p>
+                <p style="color: #6c757d; line-height: 2; margin-bottom: 0.5rem; font-size: 1.1rem;"><strong style="color: #212529;">Адрес:</strong> {{ contact_data.address }}</p>
+            {% else %}
+                <p style="color: #6c757d; line-height: 2; margin-bottom: 0.5rem; font-size: 1.1rem;"><strong style="color: #212529;">Телефон:</strong> -79537777777</p>
+                <p style="color: #6c757d; line-height: 2; margin-bottom: 0.5rem; font-size: 1.1rem;"><strong style="color: #212529;">Email:</strong> email@yandex.ru</p>
+                <p style="color: #6c757d; line-height: 2; margin-bottom: 0.5rem; font-size: 1.1rem;"><strong style="color: #212529;">Адрес:</strong> Москва</p>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Блог</title>
+</head>
+<body>
+    <h1>Список статей блога</h1>
+    <ul>
+        {% for item in blogs %}
+            <li>
+                <strong>{{ item.title }}</strong> (Просмотров: {{ item.views_count }})<br>
+                <!-- Ссылка для перехода на детальный просмотр статьи -->
+                <a href="{% url 'blog:detail' item.pk %}">Читать статью</a>
+            </li>
+        {% empty %}
+            <li>Статей пока нет в базе данных или они не опубликованы.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

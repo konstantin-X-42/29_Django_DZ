@@ -1,0 +1,57 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Заказы - Магазин{% endblock %}
+
+{% block content %}
+<div class="container-fluid text-center">
+    <h1 class="display-5 fw-normal mt-4 mb-2">Каталог</h1>
+    <p class="text-muted mb-5">Вы находитесь на странице управления заказами и каталогом элементов.</p>
+
+    <!-- ДВУХКОЛОНОЧНАЯ СЕТКА КАТАЛОГА -->
+    <div class="catalog-grid">
+
+        <!-- Карточка 1 -->
+        <div class="catalog-col">
+            <div class="catalog-card">
+                <div class="thumbnail-box">
+                    Thumbnail
+                </div>
+                <div class="catalog-body">
+                    <p class="catalog-text">
+                        This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                    </p>
+                    <div class="catalog-footer">
+                        <div class="btn-group">
+                            <button class="btn-card btn-view">View</button>
+                            <button class="btn-card btn-edit">Edit</button>
+                        </div>
+                        <small class="time-text">9 mins</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Карточка 2 -->
+        <div class="catalog-col">
+            <div class="catalog-card">
+                <div class="thumbnail-box">
+                    Thumbnail
+                </div>
+                <div class="catalog-body">
+                    <p class="catalog-text">
+                        This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                    </p>
+                    <div class="catalog-footer">
+                        <div class="btn-group">
+                            <button class="btn-card btn-view">View</button>
+                            <button class="btn-card btn-edit">Edit</button>
+                        </div>
+                        <small class="time-text">9 mins</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

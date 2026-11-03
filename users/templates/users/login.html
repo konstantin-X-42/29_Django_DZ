@@ -1,0 +1,94 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+<!-- -27- Центрирование формы авторизации на странице -->
+<div class="d-flex justify-content-center align-items-center w-100 mt-5">
+
+    <!-- -27- Компактная карточка авторизации на треть экрана -->
+    <div class="card shadow p-4" style="width: 100%; max-width: 480px; box-sizing: border-box;">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4 fw-bold">Вход в аккаунт</h2>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- -27- Замена текста Django на русский вариант ошибки -->
+                {% if form.non_field_errors %}
+                    <div class="text-danger fw-bold small mb-3" style="color: #dc3545 !important;">
+                        Неверный email или пароль. Пожалуйста, проверьте данные и повторите попытку.
+                    </div>
+                {% endif %}
+
+                <!-- -27- Вывод полей формы (Электронная почта и Пароль) -->
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label for="{{ field.id_for_label }}" class="form-label fw-semibold mb-2" style="font-size: 1.1rem;">{{ field.label }}</label>
+
+                        <!-- -27- Растягивание полей на 100% ширины карточки -->
+                        <div class="w-100">
+                            {{ field }}
+                        </div>
+
+                        <!-- -27- Вывод ошибок конкретного поля -->
+                        {% if field.errors %}
+                            <div class="text-danger fw-bold small mt-1" style="color: #dc3545 !important;">
+                                {% for error in field.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <!-- -27- Синяя, крупная кнопка входа, перебивающая глобальные стили -->
+                <button type="submit" class="custom-login-btn mt-4 shadow-sm">Войти</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- -27- Изолированный CSS-блок для стилизации полей и синей кнопки входа -->
+<style>
+    /* Увеличение и адаптивность полей ввода email и пароля */
+    .card input[type="text"],
+    .card input[type="email"],
+    .card input[type="password"] {
+        display: block;
+        width: 100% !important;
+        min-width: 100% !important;
+        padding: 0.5rem 0.75rem;
+        font-size: 1.1rem;
+        line-height: 1.5;
+        color: #212529;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.375rem;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        box-sizing: border-box;
+    }
+
+    /* Кастомные стили для кнопки "Войти" в синем цвете (Primary) */
+    .custom-login-btn {
+        display: block !important;
+        width: 100% !important;
+        min-width: 100% !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 1.25rem !important;
+        font-weight: 700 !important;
+        color: #fff !important;
+        background-color: #0d6efd !important;
+        border: 1px solid #0d6efd !important;
+        border-radius: 0.375rem !important;
+        cursor: pointer !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+        transition: background-color 0.15s ease-in-out;
+    }
+
+    .custom-login-btn:hover {
+        background-color: #0b5ed7 !important;
+        border-color: #0a58ca !important;
+    }
+</style>
+{% endblock %}

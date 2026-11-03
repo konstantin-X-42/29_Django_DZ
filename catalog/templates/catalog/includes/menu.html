@@ -1,0 +1,97 @@
+<div class="sidebar">
+    <a href="{% url 'catalog:21-2_home1' %}" style="color: white; text-decoration: none; font-size: 1.25rem; font-weight: 600; margin-bottom: 20px; display: block;">
+        МЕНЮ
+    </a>
+    <hr>
+
+    <ul class="nav">
+        <!-- Главная -->
+        <li>
+            <a href="{% url 'catalog:21-2_home1' %}" class="{% if request.resolver_match.url_name == '21-2_home1' %}active-custom{% else %}nav-link-custom{% endif %}">Главная</a>
+        </li>
+        <!-- Категории -->
+        <li>
+            <a href="{% url 'catalog:21-2_home2' %}" class="{% if request.resolver_match.url_name == '21-2_home2' %}active-custom{% else %}nav-link-custom{% endif %}">Категории</a>
+        </li>
+        <!-- Заказы -->
+        <li>
+            <a href="{% url 'catalog:21-2_home3' %}" class="{% if request.resolver_match.url_name == '21-2_home3' %}active-custom{% else %}nav-link-custom{% endif %}">Заказы</a>
+        </li>
+
+        <!-- -27- Показываем вкладки управления товарами ТОЛЬКО вошедшим пользователям -->
+        {% if user.is_authenticated %}
+            <!-- Добавить товар -->
+            <li>
+                <a href="{% url 'catalog:create_product' %}" class="{% if request.resolver_match.url_name == 'create_product' %}active-custom{% else %}nav-link-custom{% endif %}">Добавить товар</a>
+            </li>
+            <!-- -26- Управление каталогом (Редактировать) -->
+            <li>
+                <a href="{% url 'catalog:manage_products' %}" class="{% if request.resolver_match.url_name == 'manage_products' %}active-custom{% else %}nav-link-custom{% endif %}">Редактировать</a>
+            </li>
+        {% endif %}
+
+        <!-- Контакты -->
+        <li>
+            <a href="{% url 'catalog:21-2_home4' %}" class="{% if request.resolver_match.url_name == '21-2_home4' %}active-custom{% else %}nav-link-custom{% endif %}">Контакты</a>
+        </li>
+    </ul>
+
+    <hr style="margin-top: auto;">
+
+    <!-- БЛОК ПОЛЬЗОВАТЕЛЯ -->
+    <div style="position: relative;" class="dropdown">
+
+        {% if user.is_authenticated %}
+            <!-- -27- Если пользователь ВОШЕЛ в систему, показываем выпадающее меню с профилем и выходом -->
+            <ul class="custom-dropup-menu" id="dropdownMenu">
+                <li><a class="custom-dropup-item" href="{% url 'users:profile' %}">Профиль</a></li>
+                <li><div class="custom-dropup-divider"></div></li>
+                <li>
+                    <!-- -27- Выход из системы (logout) осуществляется через POST-запрос -->
+                    <form action="{% url 'users:logout' %}" method="post" style="margin: 0; padding: 0;">
+                        {% csrf_token %}
+                        <button type="submit" class="custom-dropup-item" style="color: #ea868f; background: none; border: none; width: 100%; text-align: left; padding: 5px 15px;">Выход</button>
+                    </form>
+                </li>
+            </ul>
+
+            <div class="user-container-block" id="dropdownUser">
+                <!-- -27- Динамически выводим аватарку пользователя, если она загружена, иначе базовую заглушку с Marussia -->
+                {% if user.avatar %}
+                    <img src="{{ user.avatar.url }}" alt="user" width="32" height="32" class="rounded-circle" style="object-fit: cover; border-radius: 50%;">
+                {% else %}
+                    <img src="https://a1.drive-data.ru/1b1c92es-960.jpg" alt="user" width="32" height="32" class="rounded-circle" style="object-fit: cover; border-radius: 50%;">
+                {% endif %}
+
+                <!-- -27- Выводим email укороченным вариантом или слово Профиль -->
+                <strong class="ms-1" style="font-size: 0.85rem; max-width: 120px; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: middle;">
+                    {{ user.email }}<sup style="font-size: 0.6rem; margin-left: 3px; color: #ffffff; vertical-align: super;">▲</sup>
+                </strong>
+            </div>
+
+        {% else %}
+            <!-- -27- Если зашел АНОНИМНЫЙ гость, показываем ему кнопки входа и регистрации -->
+            <div class="d-flex flex-column gap-2" style="padding: 0 10px;">
+                <a href="{% url 'users:login' %}" class="nav-link-custom text-center" style="border: 1px solid rgba(255,255,255,0.2); padding: 5px; border-radius: 4px;">Войти</a>
+                <a href="{% url 'users:register' %}" class="active-custom text-center" style="padding: 5px; border-radius: 4px; text-align: center; display: block; text-decoration: none;">Регистрация</a>
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+
+<script>
+    // -27- Скрипт отрабатывает только если элемент присутствует на странице (для залогиненных пользователей)
+    var dropdownUser = document.getElementById('dropdownUser');
+    if (dropdownUser) {
+        dropdownUser.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var menu = document.getElementById('dropdownMenu');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        });
+        document.addEventListener('click', function() {
+            var menu = document.getElementById('dropdownMenu');
+            if (menu) menu.style.display = 'none';
+        });
+    }
+</script>

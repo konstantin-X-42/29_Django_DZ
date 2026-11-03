@@ -1,0 +1,51 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 20px;">
+    <a href="{% url 'catalog:21-2_home1' %}" class="btn-outline-primary" style="display: inline-block; width: auto; padding: 8px 20px;">
+        &larr; Назад на главную
+    </a>
+</div>
+
+<div class="catalog-card" style="max-width: 800px; margin: 0 auto; flex-direction: row; display: flex; background-color: #fff; border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden;">
+    <div style="flex: 1; max-width: 400px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; min-height: 300px;">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+        {% else %}
+            <div style="color: #6c757d; font-size: 1.25rem;">Нет изображения</div>
+        {% endif %}
+    </div>
+    <div class="catalog-body" style="flex: 1; padding: 30px;">
+        <h1 style="margin-top: 0; font-size: 2.2rem; font-weight: 500;">{{ product.name }}</h1>
+        <p class="text-muted" style="margin-bottom: 15px;">Категория: {{ product.category.name }}</p>
+        <p class="catalog-text" style="font-size: 1.1rem; line-height: 1.6; color: #333; margin-bottom: 30px;">
+            {{ product.description }}
+        </p>
+        <div style="font-size: 2rem; font-weight: 600; margin-bottom: 20px; color: #212529;">
+            {{ product.price }} ₽
+        </div>
+        <button class="btn-outline-primary" style="background-color: #2f6bf2; color: #fff; margin-bottom: 15px;">Оформить заказ</button>
+
+        <!-- -28- Блок управления правами на продукт -->
+        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #dee2e6; display: flex; gap: 10px;">
+
+            <!-- -28- Редактировать продукт может его владелец ИЛИ модератор с кастомным правом -->
+            {% if user == product.owner or perms.catalog.can_unpublish_product %}
+                <a href="{% url 'catalog:update_product' product.pk %}" class="btn-outline-primary" style="background-color: #ffc107; color: #000; border-color: #ffc107; padding: 8px 15px; border-radius: 4px; text-decoration: none; font-size: 0.9rem;">
+                    Редактировать
+                </a>
+            {% endif %}
+
+            <!-- -28- Удалять продукт может его владелец ИЛИ модератор с общим правом на удаление -->
+            {% if user == product.owner or perms.catalog.delete_product %}
+                <a href="{% url 'catalog:delete_product' product.pk %}" class="btn-outline-primary" style="background-color: #dc3545; color: #fff; border-color: #dc3545; padding: 8px 15px; border-radius: 4px; text-decoration: none; font-size: 0.9rem;">
+                    Удалить
+                </a>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

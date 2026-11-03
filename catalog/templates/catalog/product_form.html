@@ -1,0 +1,102 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}
+{% if object %}Редактировать товар
+{% else %}Добавить товар
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto; background-color: #fff; padding: 40px; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 .125rem .25rem rgba(0,0,0,.05);">
+    <!-- Динамический заголовок страницы -->
+    <h2 class="mb-4" style="font-weight: 400; margin-top: 0;">
+        {% if object %}Редактировать товар
+        {% else %}Добавить товар
+        {% endif %}
+    </h2>
+
+    <!-- Динамический подзаголовок -->
+    <p class="text-muted mb-4" style="font-size: 0.95rem;">
+        {% if object %}
+            Внесите изменения в поля ниже, чтобы обновить продукт в каталоге.
+        {% else %}
+            Заполните поля ниже, чтобы опубликовать новый продукт в каталоге.
+        {% endif %}
+    </p>
+
+    <!-- Форма отправляет данные методом POST и поддерживает загрузку картинок (enctype) -->
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- -27- Поочередный перебор всех полей формы для точечной кастомизации блока категорий -->
+        {% for field in form %}
+            {% if field.name == 'category' %}
+                <!-- -27- Контейнер поля категории с оригинальным тегом label для сохранения системного шрифта формы -->
+                <p style="margin-bottom: 1rem;">
+                    {{ field.label_tag }}<br>
+
+                    <span style="display: flex; gap: 10px; width: 100%; align-items: center; box-sizing: border-box; margin-top: 4px;">
+                        <!-- -27- Крупный выпадающий список (font-size: 1.1rem, height: 46px), занимающий всю ширину строки -->
+                        <select name="category" id="id_category" style="flex: 1; width: 100%; height: 46px; padding: 8px 14px; border: 1px solid #dee2e6; border-radius: 6px; background-color: #fff; box-sizing: border-box; font-size: 1.1rem; cursor: pointer;">
+                            {% for choice in field.field.choices %}
+                                <option value="{{ choice.0 }}" {% if field.value|stringformat:"s" == choice.0|stringformat:"s" %}selected{% endif %} style="padding: 10px; font-size: 1.1rem;">
+                                    <!-- -27- Заменяем стандартное пустое англоязычное значение Django на понятный русский текст -->
+                                    {% if choice.0 == "" or choice.1 == "---------" or "Select" in choice.1 %}
+                                        Выберите категорию
+                                    {% else %}
+                                        {{ choice.1 }}
+                                    {% endif %}
+                                </option>
+                            {% endfor %}
+                        </select>
+
+                        <!-- -27- Модернизированная кнопка «плюс», соответствующая высоте селектора (height: 46px) -->
+                        <a href="/admin/catalog/category/add/" target="_blank" style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 46px; border: 1px solid #2f6bf2; color: #2f6bf2; background: transparent; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 1.4rem; cursor: pointer; box-sizing: border-box;" title="Добавить новую категорию">
+                            ＋
+                        </a>
+                    </span>
+
+                    {% if field.help_text %}
+                        <small style="color: #6c757d; display: block; margin-top: 0.25rem;">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <span style="color: red; display: block; margin-top: 0.25rem;">{{ error }}</span>
+                    {% endfor %}
+                </p>
+            {% else %}
+                <!-- -27- Стандартный вывод для всех остальных полей формы с сохранением дефолтных стилей Django -->
+                <p>
+                    {{ field.label_tag }}<br>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small style="color: #6c757d; display: block;">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <span style="color: red; display: block;">{{ error }}</span>
+                    {% endfor %}
+                </p>
+            {% endif %}
+        {% endfor %}
+
+        <div style="margin-top: 30px; display: flex; gap: 15px;">
+            <!-- Динамический текст на кнопке сохранения -->
+            <button type="submit" class="btn-outline-primary" style="background-color: #2f6bf2; color: white; flex: 1;">
+                {% if object %}Сохранить изменения
+                {% else %}Сохранить товар
+                {% endif %}
+            </button>
+
+            <!-- Динамическая кнопка отмены: при редактировании возвращает в панель управления, при создании — на главную -->
+            {% if object %}
+                <a href="{% url 'catalog:manage_products' %}" class="btn-outline-primary" style="text-align: center; border-color: #6c757d; color: #6c757d; flex: 1;">
+                    Отмена
+                </a>
+            {% else %}
+                <a href="{% url 'catalog:21-2_home1' %}" class="btn-outline-primary" style="text-align: center; border-color: #6c757d; color: #6c757d; flex: 1;">
+                    Отмена
+                </a>
+            {% endif %}
+        </div>
+    </form>
+</div>
+{% endblock %}
