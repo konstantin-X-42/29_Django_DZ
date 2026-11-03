@@ -42,5 +42,4 @@ urlpatterns = [
 
     # -26- Маршрут URL, для отображения страницы панели управления товарами
     path('products/manage/', ProductManageListView.as_view(), name='manage_products'),
-
 ]

@@ -72,6 +72,18 @@ DATABASES = {
 }
 
 
+# -29- Настройка брокера Redis для централизованного кэширования проекта (Задание 1)
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379',
+    }
+}
+
+# -29- Константа времени жизни кэша (TTL) в секундах — выставляем на 15 минут (Задание 1)
+CACHE_TTL = 60 * 15
+
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
