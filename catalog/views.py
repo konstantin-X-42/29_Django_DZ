@@ -8,6 +8,9 @@ from catalog.forms import (ProductForm,
 from django.utils.decorators import method_decorator # -29- Импорт утилиты декорирования методов класса (Задание 2)
 from django.views.decorators.cache import cache_page # -29- Импорт декоратора кэширования страниц (Задание 2)
 from django.conf import settings # -29- Импорт настроек проекта для получения CACHE_TTL (Задание 2)
+from catalog.services import get_products_by_category # -29- Импорт сервисной функции (Задание 3)
+
+
 
 class ProductListView(ListView):
     """-25- Контроллер главной страницы"""
@@ -34,6 +37,27 @@ class CategoriesListView(ListView):
     template_name = 'catalog/21-2_home2.html'
     context_object_name = 'categories' # -26- Исправил имя контекста
 
+
+
+# -29- Новое отдельное представление для отображения списка продуктов конкретной категории (Задание 3)
+class CategoryProductsListView(ListView):
+    """
+    # -29- Контроллер использует сервисную функцию для получения отфильтрованных данных (Задание 3)
+    """
+    template_name = 'catalog/home.html'  # -29- Используем существующий готовый шаблон каталога товаров
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        # -29- Извлекаем целочисленный ID категории из параметров маршрута URL
+        category_id = self.kwargs.get('category_id')
+        # -29- Запрашиваем данные через наш сервис
+        return get_products_by_category(category_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # -29- Передаем сам объект категории для вывода заголовка в шаблоне
+        context['current_category'] = Category.objects.filter(id=self.kwargs.get('category_id')).first()
+        return context
 
 
 class OrdersTemplateView(TemplateView):

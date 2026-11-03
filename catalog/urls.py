@@ -2,6 +2,7 @@ from django.urls import path
 from catalog.views import (
     ProductListView,        # -25- Импорт контроллера главной страницы, вывод списка всех товаров из базы данных
     CategoriesListView,     # -25- Импорт контроллера отображения списка объектов
+    CategoryProductsListView, # -29- Импорт нового представления категорий (Задание 3)
     OrdersTemplateView,     # -25- Импорт контроллера отобразить HTML-страницу заказов без сложной логики
     ContactsTemplateView,   # -25- Импорт контроллера отображения статической или полустатической страницы (контактов)
     ProductDetailView,      # -25- Импорт контроллера отображение детальной информации об одном конкретном объекте
@@ -20,6 +21,9 @@ urlpatterns = [
 
     # -22- маршрут URL, для Категорий страница 2
     path('categories/', CategoriesListView.as_view(), name='21-2_home2'),
+
+    # -29- Новый маршрут для вывода списка продуктов конкретной категории (Задание 3)
+    path('categories/<int:category_id>/products/', CategoryProductsListView.as_view(), name='category_products'),
 
     # -22- маршрут URL, для Заказов страница 3
     path('orders/', OrdersTemplateView.as_view(), name='21-2_home3'),
